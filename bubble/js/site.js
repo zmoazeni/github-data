@@ -21,7 +21,7 @@ height = 500 - margin.top - margin.bottom;
 var xScale = d3.scale.pow().exponent(.3).domain([0, 200]).range([0, width]),
 yScale = d3.scale.pow().exponent(.3).domain([0, 16]).range([height, 0]),
 radiusScale = d3.scale.sqrt().domain([0, 5000]).range([5, 50]),
-colorScale = d3.scale.category20();
+colorScale = d3.scale.category20b();
 
 // The x & y axes.
 var xAxis = d3.svg.axis().orient("bottom").scale(xScale).ticks(12, d3.format(",d")),
@@ -30,6 +30,8 @@ yAxis = d3.svg.axis().scale(yScale).orient("left");
 var dayRange = [72, 138];
 
 $(function() {
+  prettyPrint();
+
   // Create the SVG container and set the origin.
   var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
