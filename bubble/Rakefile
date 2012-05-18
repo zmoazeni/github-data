@@ -31,3 +31,31 @@ task :convert do
     file << MultiJson.encode(languages.values)
   end
 end
+
+desc "Gets minimum and maximum pushes, repos, and sizes"
+task :bounds do
+  csv_file = File.expand_path("../data/data.csv", __FILE__)
+  min_push, max_push, min_repo, max_repo, min_size, max_size = nil
+  
+  CSV.foreach(csv_file, headers: true) do |row|
+    pushes = row["pushes"].to_i
+    min_push ||= pushes
+    max_push ||= pushes
+    min_push = pushes if pushes < min_push
+    max_push = pushes if pushes > max_push
+    
+    repos = row["active_repos"].to_i
+    min_repo ||= repos
+    max_repo ||= repos
+    min_repo = repos if repos < min_repo
+    max_repo = repos if repos > max_repo
+    
+    sizes = row["size"].to_i
+    min_size ||= sizes
+    max_size ||= sizes
+    min_size = sizes if sizes < min_size
+    max_size = sizes if sizes > max_size
+  end
+
+  puts "min/max pushes: [#{min_push},#{max_push}] - min/max repos: [#{min_repo},#{max_repo}] - min/max sizes: [#{min_size},#{max_size}]"
+end
