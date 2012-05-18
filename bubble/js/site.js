@@ -100,7 +100,7 @@ $(function() {
 
     // Start a transition that interpolates the data based on day.
     svg.transition()
-      .duration(1000)
+      .duration(20000)
       .ease("linear")
       .tween("day", tweenDay)
       .each("end", enableInteraction);
