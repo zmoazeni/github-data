@@ -10,6 +10,7 @@ function y(d) { return d.pushes / 1000; }
 function radius(d) { return d.repos; }
 function color(d) { return d.name; }
 function key(d) { return d.name; }
+function tooltip(d) { return d.name + ": " + d.repos + " repos " + d.pushes + " pushes " + (d.size / 1024 / 1024).toFixed(2) + " GB"; }
 
 // Chart dimensions.
 var margin = {top: 19.5, right: 19.5, bottom: 19.5, left: 39.5},
@@ -85,11 +86,15 @@ $(function() {
       .attr("class", "dot")
       .style("fill", function(d) { return colorScale(color(d)); })
       .call(position)
-      .sort(order);
+      .sort(order)
+      .attr("data-original-title", tooltip);
 
     // Add a title.
     dot.append("title")
       .text(function(d) { return d.name; });
+
+
+    $("circle").tooltip()
 
     // Start a transition that interpolates the data based on day.
     svg.transition()
@@ -152,7 +157,7 @@ $(function() {
 
     // Updates the display to show the specified day.
     function displayDay(day) {
-      dot.data(interpolateData(day), key).call(position).sort(order);
+      dot.data(interpolateData(day), key).call(position).sort(order).attr("data-original-title", tooltip);
       label.text(Math.round(day));
     }
 
