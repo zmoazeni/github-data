@@ -1,0 +1,43 @@
+/* This code heavily draws from the ideas/code from */
+/* http://bost.ocks.org/mike/nations/ and */
+/* https://github.com/mbostock/bost.ocks.org/blob/gh-pages/mike/nations/index.html */
+/* Permission from Mike Bostock before reusing, so if you intend to */
+/* please also ask him. */
+
+#chart {
+  margin-left: 20px;
+  height: 506px;
+}
+
+text {
+  font: 10px sans-serif;
+}
+
+.dot {
+  stroke: #000;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.label {
+  fill: #777;
+}
+
+.date.label {
+  font: 500 196px "Helvetica Neue";
+  fill: #ddd;
+}
+
+.date.label.active {
+  fill: #aaa;
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+  cursor: ew-resize;
+}
