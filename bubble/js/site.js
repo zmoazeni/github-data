@@ -4,6 +4,8 @@
 // Permission was granted from Mike Bostock before reusing, so if you
 // intend to reuse this please also ask him.
 
+var ydayConversions = {"60":"Feb 29, 2012","61":"Mar 01, 2012","62":"Mar 02, 2012","63":"Mar 03, 2012","64":"Mar 04, 2012","65":"Mar 05, 2012","66":"Mar 06, 2012","67":"Mar 07, 2012","68":"Mar 08, 2012","69":"Mar 09, 2012","70":"Mar 10, 2012","71":"Mar 11, 2012","72":"Mar 12, 2012","73":"Mar 13, 2012","74":"Mar 14, 2012","75":"Mar 15, 2012","76":"Mar 16, 2012","77":"Mar 17, 2012","78":"Mar 18, 2012","79":"Mar 19, 2012","80":"Mar 20, 2012","81":"Mar 21, 2012","82":"Mar 22, 2012","83":"Mar 23, 2012","84":"Mar 24, 2012","85":"Mar 25, 2012","86":"Mar 26, 2012","87":"Mar 27, 2012","88":"Mar 28, 2012","89":"Mar 29, 2012","90":"Mar 30, 2012","91":"Mar 31, 2012","92":"Apr 01, 2012","93":"Apr 02, 2012","94":"Apr 03, 2012","95":"Apr 04, 2012","96":"Apr 05, 2012","97":"Apr 06, 2012","98":"Apr 07, 2012","99":"Apr 08, 2012","100":"Apr 09, 2012","101":"Apr 10, 2012","102":"Apr 11, 2012","103":"Apr 12, 2012","104":"Apr 13, 2012","105":"Apr 14, 2012","106":"Apr 15, 2012","107":"Apr 16, 2012","108":"Apr 17, 2012","109":"Apr 18, 2012","110":"Apr 19, 2012","111":"Apr 20, 2012","112":"Apr 21, 2012","113":"Apr 22, 2012","114":"Apr 23, 2012","115":"Apr 24, 2012","116":"Apr 25, 2012","117":"Apr 26, 2012","118":"Apr 27, 2012","119":"Apr 28, 2012","120":"Apr 29, 2012","121":"Apr 30, 2012","122":"May 01, 2012","123":"May 02, 2012","124":"May 03, 2012","125":"May 04, 2012","126":"May 05, 2012","127":"May 06, 2012","128":"May 07, 2012","129":"May 08, 2012","130":"May 09, 2012","131":"May 10, 2012","132":"May 11, 2012","133":"May 12, 2012","134":"May 13, 2012","135":"May 14, 2012","136":"May 15, 2012","137":"May 16, 2012","138":"May 17, 2012","139":"May 18, 2012"}
+
 // Various accessors that specify the four dimensions of data to visualize.
 function x(d) { return d.size / 1024 / 1024; }
 function y(d) { return d.pushes / 1000; }
@@ -100,7 +102,7 @@ $(function() {
 
     // Start a transition that interpolates the data based on day.
     svg.transition()
-      .duration(20000)
+      .duration(10000)
       .ease("linear")
       .tween("day", tweenDay)
       .each("end", enableInteraction);
@@ -160,7 +162,7 @@ $(function() {
     // Updates the display to show the specified day.
     function displayDay(day) {
       dot.data(interpolateData(day), key).call(position).sort(order).attr("data-original-title", tooltip);
-      label.text(Math.round(day));
+      label.text(ydayConversions[Math.round(day).toString()]);
     }
 
     // Interpolates the dataset for the given day.
