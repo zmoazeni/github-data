@@ -17,10 +17,10 @@ width = 960 - margin.right,
 height = 500 - margin.top - margin.bottom;
 
 // Various scales. These domains make assumptions of data, naturally.
-var xScale = d3.scale.linear().domain([0, 250000000]).range([0, width]),
-yScale = d3.scale.linear().domain([0, 12000]).range([height, 0]),
-radiusScale = d3.scale.sqrt().domain([0, 5000]).range([0, 40]),
-colorScale = d3.scale.category20b();
+var xScale = d3.scale.sqrt().domain([0, 250000000]).range([0, width]),
+yScale = d3.scale.sqrt().domain([0, 12000]).range([height, 0]),
+radiusScale = d3.scale.sqrt().domain([0, 5000]).range([5, 50]),
+colorScale = d3.scale.category20();
 
 // The x & y axes.
 var xAxis = d3.svg.axis().orient("bottom").scale(xScale).ticks(12, d3.format(",d")),
@@ -93,7 +93,7 @@ $(function() {
 
     // Start a transition that interpolates the data based on day.
     svg.transition()
-      .duration(10000)
+      .duration(15000)
       .ease("linear")
       .tween("day", tweenDay)
       .each("end", enableInteraction);
