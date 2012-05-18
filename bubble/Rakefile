@@ -1,0 +1,33 @@
+require "rubygems"
+require "csv"
+require "multi_json"
+require "debugger"
+
+desc "Converts CSV from data folder to JSON"
+task :convert do
+  csv_file = File.expand_path("../data/data.csv", __FILE__)
+  languages = {}
+  CSV.foreach(csv_file, headers: true) do |row|
+    key, name = if lang = row["repository_language"]
+                  [lang.downcase.to_sym, lang]
+                else
+                  [:unknown, "Unknown"]
+                end
+    language = languages[key] ||= {name:name, pushes:[], repos:[], sizes:[]}
+    date = Time.at(row["created_at"].to_i / 1_000_000).utc
+    language[:pushes] << [date.yday, row["pushes"].to_i]
+    language[:repos]  << [date.yday, row["active_repos"].to_i]
+    language[:sizes]  << [date.yday, row["size"].to_i]
+  end
+  
+  languages.each do |language, values|
+    sorter = proc {|a, b| a[0] <=> b[0] }
+    values[:pushes] = values[:pushes].sort(&sorter) 
+    values[:repos] = values[:repos].sort(&sorter) 
+    values[:sizes] = values[:sizes].sort(&sorter) 
+  end
+  
+  File.open(File.expand_path("../js/data.js", __FILE__), "w+") do |file|
+    file << MultiJson.encode(languages.values)
+  end
+end
