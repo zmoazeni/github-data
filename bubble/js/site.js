@@ -1,8 +1,8 @@
 // This code heavily draws from the ideas/code from
 // http://bost.ocks.org/mike/nations/ and
 // https://github.com/mbostock/bost.ocks.org/blob/gh-pages/mike/nations/index.html
-// Permission from Mike Bostock before reusing, so if you intend to
-// please also ask him.
+// Permission was granted from Mike Bostock before reusing, so if you
+// intend to reuse this please also ask him.
 
 // Various accessors that specify the four dimensions of data to visualize.
 function x(d) { return d.size; }
