@@ -5,8 +5,8 @@
 // intend to reuse this please also ask him.
 
 // Various accessors that specify the four dimensions of data to visualize.
-function x(d) { return d.size; }
-function y(d) { return d.pushes; }
+function x(d) { return d.size / 1024 / 1024; }
+function y(d) { return d.pushes / 1000; }
 function radius(d) { return d.repos; }
 function color(d) { return d.name; }
 function key(d) { return d.name; }
@@ -17,8 +17,8 @@ width = 960 - margin.right,
 height = 500 - margin.top - margin.bottom;
 
 // Various scales. These domains make assumptions of data, naturally.
-var xScale = d3.scale.pow().exponent(.3).domain([0, 300000000]).range([0, width]),
-yScale = d3.scale.pow().exponent(.3).domain([0, 16000]).range([height, 0]),
+var xScale = d3.scale.pow().exponent(.3).domain([0, 200]).range([0, width]),
+yScale = d3.scale.pow().exponent(.3).domain([0, 16]).range([height, 0]),
 radiusScale = d3.scale.sqrt().domain([0, 5000]).range([5, 50]),
 colorScale = d3.scale.category20();
 
@@ -53,7 +53,7 @@ $(function() {
     .attr("text-anchor", "end")
     .attr("x", width)
     .attr("y", height - 5)
-    .text("total size of repositories (kilobytes)");
+    .text("total size of repositories (gigabytes)");
 
   // Add a y-axis label.
   svg.append("text")
@@ -62,7 +62,7 @@ $(function() {
     .attr("y", 6)
     .attr("dy", "0.75em")
     .attr("transform", "rotate(-90)")
-    .text("number of git pushes");
+    .text("git pushes (thousands)");
 
   // Add the date label; the value is set on transition.
   var label = svg.append("text")
