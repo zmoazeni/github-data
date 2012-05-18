@@ -12,7 +12,16 @@ function y(d) { return d.pushes / 1000; }
 function radius(d) { return d.repos; }
 function color(d) { return d.name; }
 function key(d) { return d.name; }
-function tooltip(d) { return d.name + ": " + d.repos + " repos " + d.pushes + " pushes " + (d.size / 1024 / 1024).toFixed(2) + " GB"; }
+function tooltip(d) { return d.name + ": " + d.repos + " repos " + d.pushes + " pushes " + x(d).toFixed(2) + " GB"; }
+
+function fillTable(dot) { 
+  var $body = $("#explicit tbody");
+  $body.empty();
+  dot.each(function(d) {
+    $body.append("<tr><td>" + d.name + "</td><td>" + d.repos + "</td><td>" + d.pushes + "</td><td>" + x(d).toFixed(2) + "</td></tr>");
+  });
+}
+
 
 // Chart dimensions.
 var margin = {top: 19.5, right: 19.5, bottom: 19.5, left: 39.5},
@@ -33,6 +42,7 @@ var dayRange = [72, 138];
 
 $(function() {
   prettyPrint();
+  $(".collapse").collapse({toggle:false});
 
   // Create the SVG container and set the origin.
   var svg = d3.select("#chart").append("svg")
@@ -162,6 +172,7 @@ $(function() {
     // Updates the display to show the specified day.
     function displayDay(day) {
       dot.data(interpolateData(day), key).call(position).sort(order).attr("data-original-title", tooltip);
+      fillTable(dot);
       label.text(ydayConversions[Math.round(day).toString()]);
     }
 
