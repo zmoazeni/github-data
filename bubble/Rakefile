@@ -27,7 +27,7 @@ task :convert do
     values[:sizes] = values[:sizes].sort(&sorter) 
   end
   
-  File.open(File.expand_path("../js/data.js", __FILE__), "w+") do |file|
+  File.open(File.expand_path("../js/data.json", __FILE__), "w+") do |file|
     file << MultiJson.encode(languages.values)
   end
 end
