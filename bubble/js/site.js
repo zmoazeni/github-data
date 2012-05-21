@@ -11,7 +11,7 @@ function x(d) { return d.size / 1024 / 1024; }
 function y(d) { return d.pushes / 1000; }
 function radius(d) { return d.repos; }
 function color(d) { return d.name; }
-function key(d) { return d.name; }
+window.key2 = window.key = function (d) { return d.name; }
 function tooltip(d) { return d.name + ": " + d.repos + " repos " + d.pushes + " pushes " + x(d).toFixed(2) + " GB"; }
 
 function fillTable(dot) { 
@@ -112,7 +112,7 @@ $(function() {
 
     // Start a transition that interpolates the data based on day.
     svg.transition()
-      .duration(10000)
+      .duration(15000)
       .ease("linear")
       .tween("day", tweenDay)
       .each("end", enableInteraction);
@@ -132,34 +132,37 @@ $(function() {
     // After the transition finishes, you can mouseover to change the day.
     function enableInteraction() {
       var box = label.node().getBBox();
-
       var graphScale = d3.scale.linear()
         .domain(dayRange)
         .range([box.x + 10, box.x + box.width - 10])
         .clamp(true);
 
-      svg.append("rect")
+      var rect = svg.append("rect")
         .attr("class", "overlay")
         .attr("x", box.x)
         .attr("y", box.y)
         .attr("width", box.width)
-        .attr("height", box.height)
-        .on("mouseover", mouseover)
-        .on("mouseout", mouseout)
-        .on("mousemove", mousemove)
-        .on("touchmove", mousemove);
+        .attr("height", box.height);
 
-      function mouseover() {
-        label.classed("active", true);
-      }
-
-      function mouseout() {
-        label.classed("active", false);
-      }
-
-      function mousemove() {
-        displayDay(graphScale.invert(d3.mouse(this)[0]));
-      }
+      $("#slider").show();
+      $("#slider [type=slider]").slider({
+        from: dayRange[0],
+        to: dayRange[1],
+        step: 1,
+        dimension: '',
+        calculate: function(val) {
+          return ydayConversions[val.toString()];
+        },
+        onstatechange: function(val) { 
+          label.classed("active", true);
+          displayDay(val);
+        },
+        callback: function(val) {
+          label.classed("active", false);
+        }
+      });
+      $("#slider [type=slider]").slider("value", dayRange[1]);
+      label.classed("active", false)
     }
 
     // Tweens the entire chart by first tweening the day, and then the data.
@@ -171,7 +174,7 @@ $(function() {
 
     // Updates the display to show the specified day.
     function displayDay(day) {
-      dot.data(interpolateData(day), key).call(position).sort(order).attr("data-original-title", tooltip);
+      dot.data(interpolateData(day), window.key2).call(position).sort(order).attr("data-original-title", tooltip);
       fillTable(dot);
       label.text(ydayConversions[Math.round(day).toString()]);
     }
